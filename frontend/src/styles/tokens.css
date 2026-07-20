@@ -1,0 +1,32 @@
+/* Design tokens — CSS mirror of src/theme/tokens.js. Keep both in sync. */
+:root {
+  /* palette */
+  --gold: #d6ad45;
+  --gold-soft: rgba(214, 173, 69, 0.8);
+  --gold-faint: rgba(214, 173, 69, 0.35);
+  --leather: #4a2915;
+  --leather-dark: #221006;
+  --paper: #eee1bd;
+  --paper-edge: #d8c797;
+  --ink: #362215;
+  --bg: #100908;
+  --bg-warm: #3e1d0d;
+  --text: #f3e5bf;
+  --text-dim: #d8c797;
+
+  /* type scale (minor third-ish, clamped for viewport) */
+  --font-body: Vazirmatn, Georgia, serif;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-md: 15px;
+  --text-lg: clamp(18px, 2.2vw, 22px);
+  --text-xl: clamp(26px, 4vw, 44px);
+
+  /* surfaces & radii */
+  --surface: rgba(24, 12, 5, 0.9);
+  --surface-border: 1px solid var(--gold-faint);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+  --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.55);
+}

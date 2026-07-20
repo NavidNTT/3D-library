@@ -1,0 +1,99 @@
+@import './styles/tokens.css';
+
+/* --- Immersive stage: canvas IS the page ---------------------------------- */
+.app { position: fixed; inset: 0; overflow: hidden; background: radial-gradient(circle at 50% 30%, var(--bg-warm), var(--bg) 68%); }
+.reader-canvas { position: absolute; inset: 0; height: 100dvh; width: 100vw; }
+.reader-canvas canvas { touch-action: none; }
+
+/* Header floats over the canvas behind a gradient scrim for readability */
+.app__header {
+  position: fixed; z-index: 4; top: 0; left: 0; right: 0;
+  text-align: center; padding: 22px 20px 46px; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(16, 9, 8, 0.85) 0%, rgba(16, 9, 8, 0.45) 55%, transparent 100%);
+  transition: opacity .45s ease;
+}
+.app__header p { color: var(--gold); letter-spacing: .25em; font: 600 var(--text-xs) var(--font-body); margin: 0; }
+.app__header h1 { margin: 4px 0; font-size: var(--text-xl); color: var(--text); }
+.app__header span { color: var(--text-dim); font-size: var(--text-sm); }
+.app--reading .app__header { opacity: 0; }
+
+/* --- Status / hint pills --------------------------------------------------- */
+.status-overlay, .shelf-hint {
+  position: fixed; z-index: 5; bottom: 24px; left: 50%; transform: translateX(-50%);
+  margin: 0; padding: 10px 16px; border-radius: var(--radius-pill);
+  background: var(--surface); border: var(--surface-border);
+  color: var(--text); font-size: var(--text-sm);
+}
+
+/* --- Reader controls ------------------------------------------------------- */
+.reader-controls {
+  position: fixed; z-index: 8; left: 50%; bottom: 24px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 14px; width: min(92vw, 680px);
+  padding: 10px 14px; border: var(--surface-border); border-radius: var(--radius-md);
+  background: var(--surface); backdrop-filter: blur(12px); color: var(--text);
+}
+.reader-controls span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; font-size: var(--text-xs); }
+.reader-controls button { border: 1px solid var(--gold-soft); border-radius: var(--radius-sm); padding: 6px 10px; color: var(--text); background: var(--leather); }
+.reader-controls div { display: flex; gap: 6px; }
+
+/* --- Hover tooltip (DOM card following the book) --------------------------- */
+.book-tooltip {
+  position: fixed; z-index: 6; transform: translate(-50%, -110%);
+  display: flex; flex-direction: column; gap: 3px; align-items: center;
+  min-width: 150px; max-width: 240px; padding: 10px 16px 12px;
+  background: var(--surface); border: var(--surface-border); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-pop); pointer-events: none;
+  animation: tooltip-in .18s ease-out;
+}
+.book-tooltip strong { color: var(--text); font-size: var(--text-md); text-align: center; }
+.book-tooltip em { color: var(--text-dim); font-size: var(--text-xs); font-style: italic; }
+.book-tooltip span { color: var(--text-dim); font-size: var(--text-sm); }
+.book-tooltip small { margin-top: 3px; padding: 2px 10px; border: 1px solid; border-radius: var(--radius-pill); font-size: var(--text-xs); }
+@keyframes tooltip-in { from { opacity: 0; transform: translate(-50%, -100%); } to { opacity: 1; transform: translate(-50%, -110%); } }
+
+/* --- Suggest-a-book: corner FAB + native dialog ---------------------------- */
+.suggest-fab {
+  position: fixed; z-index: 7; right: 20px; bottom: 20px;
+  padding: 10px 18px; border: var(--surface-border); border-radius: var(--radius-pill);
+  background: var(--surface); color: var(--gold); font-size: var(--text-sm);
+  backdrop-filter: blur(8px); transition: border-color .25s, color .25s;
+}
+.suggest-fab:hover { border-color: var(--gold); color: var(--text); }
+.app--reading .suggest-fab { opacity: 0; pointer-events: none; }
+
+.suggestion-dialog {
+  margin: auto; padding: 0; border: var(--surface-border); border-radius: var(--radius-md);
+  background: var(--bg); color: var(--text); width: min(92vw, 420px);
+  box-shadow: var(--shadow-pop);
+}
+.suggestion-dialog::backdrop { background: rgba(8, 4, 2, 0.7); backdrop-filter: blur(3px); }
+.suggestion-form { display: flex; flex-direction: column; gap: 10px; padding: 18px; }
+.suggestion-form header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.suggestion-form header strong { color: var(--gold); font-size: var(--text-lg); }
+.suggestion-form header button { border: 0; background: none; color: var(--text-dim); font-size: var(--text-md); padding: 4px 8px; }
+.suggestion-form input { border: 1px solid var(--leather); border-radius: var(--radius-sm); padding: 10px; color: var(--text); background: var(--leather-dark); }
+.suggestion-form input:focus { outline: 1px solid var(--gold-faint); }
+.suggestion-form__send { border: 1px solid var(--gold-soft); border-radius: var(--radius-sm); padding: 10px; color: var(--text); background: var(--leather); font-size: var(--text-md); }
+.suggestion-form small { color: var(--text-dim); }
+
+/* --- One-time drag hint ---------------------------------------------------- */
+.gesture-hint {
+  position: fixed; z-index: 9; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 18px 26px; border-radius: var(--radius-md);
+  background: var(--surface); border: var(--surface-border); color: var(--text);
+  animation: hint-fade .5s ease-out;
+}
+.gesture-hint p { margin: 0; font-size: var(--text-sm); }
+.gesture-hint__hand { font-size: 30px; animation: hint-drag 1.6s ease-in-out infinite; }
+@keyframes hint-drag { 0%, 100% { transform: translateX(26px); } 50% { transform: translateX(-26px); } }
+@keyframes hint-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- Base + responsive ----------------------------------------------------- */
+button, input { font: inherit; }
+button { cursor: pointer; }
+@media (max-width: 600px) {
+  .reader-controls { gap: 8px; padding: 8px; }
+  .reader-controls span { font-size: var(--text-xs); }
+  .suggest-fab { right: 12px; bottom: 12px; padding: 8px 14px; }
+}

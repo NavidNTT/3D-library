@@ -1,0 +1,25 @@
+/* Self-hosted Vazirmatn (variable, wght 100-900), split per script so a
+   Latin-only page never downloads the Arabic subset and vice versa.
+   Relative URLs let Vite hash the files and honor the deploy base path. */
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/vazirmatn-arabic.woff2') format('woff2-variations');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFC;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/vazirmatn-latin.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+FEFF, U+FFFD;
+}
+
+:root { font-family: Vazirmatn, Georgia, serif; color: #f3e5bf; background: #100908; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+button { cursor: pointer; }
